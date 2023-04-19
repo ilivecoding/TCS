@@ -25,11 +25,10 @@ namespace TCS
         public Form1()
         {
             InitializeComponent();
-            Text = "TCS";
             MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
-            pictureBox1.Width = snakeSize * 20;
-            pictureBox1.Height = snakeSize * 10;
+            Width = snakeSize * 30;
+            Height = snakeSize * 20;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -44,12 +43,14 @@ namespace TCS
         private void InitGame()
         {
             // 初始化贪吃蛇位置和方向
+            score = 0;
+            snakeLength = 2;
+            direction = Direction.Right;
             snake.Clear();
             for (int i = 0; i < snakeLength; i++)
             {
                 snake.Add(new Point(i, 0));
             }
-            direction = Direction.Right;
             // 随机生成食物位置
             GenerateFood();
             // 得分
@@ -62,7 +63,7 @@ namespace TCS
 
         private void ShowScore()
         {
-            label1.Text = "得分：" + score;
+            Text = $"tcs score：{score} snakeX：{snake[0].X} snakeY：{snake[0].Y} foodX：{foodX} foodY：{foodY}";
         }
 
         // 生成食物
@@ -93,7 +94,7 @@ namespace TCS
             // 移动贪吃蛇
             MoveSnake();
             // 判断是否吃到食物
-            if (snake[0].X == foodX && snake[0].Y == foodY)
+            if (snake[0].X * snakeSize == foodX && snake[0].Y * snakeSize == foodY)
             {
                 snakeLength++;
                 score++;
@@ -107,10 +108,12 @@ namespace TCS
             {
                 // 游戏结束
                 timer1.Stop();
+                stopwatch.Stop();
                 ShowScore();
                 MessageBox.Show("游戏结束！");
                 InitGame();
             }
+            ShowScore();
             // 刷新游戏区域
             pictureBox1.Invalidate();
         }
